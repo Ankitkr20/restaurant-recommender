@@ -1,0 +1,104 @@
+# =============================
+# OS / Editor / macOS
+# =============================
+.DS_Store
+.DS_Store?
+Thumbs.db
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+*.swp
+*.swo
+*.tmp
+.idea/
+.vscode/settings.json
+*.iml
+.vscode/
+.idea/workspace.xml
+
+# =============================
+# Python / FastAPI / Virtual Envs
+# =============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+venv310/
+.venv/
+ENV/
+env.bak/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.eggs/
+*.egg-info/
+hypothesis/
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# =============================
+# Data - PROTECT PROCESSED MODELS
+# =============================
+# Block RAW/large data only
+data/raw/
+data/full_dataset*
+*.csv          # Large CSVs
+*.zip
+*.h5
+*.parquet
+*.feather
+*.jsonl
+
+# ALLOW: data/processed/*.pkl, *.json (your recommender needs these!)
+
+# =============================
+# Environment / Secrets
+# =============================
+.env*
+*.env
+.env.local
+.env.development*
+.env.production*
+
+# =============================
+# Logs / Temp / IDE
+# =============================
+logs/
+*.log
+.npm/
+.yarn/
+.eslintcache
+.pytest_cache/
+coverage/
+htmlcov/
+.dynamodb/
+
+# =============================
+# Node (safe to include)
+# =============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn.lock
+package-lock.json
+
+# =============================
+# Builds / Dist
+# =============================
+build/
+dist/
+.cache/
+
+# =============================
+# Database / Static
+# =============================
+*.db
+*.sqlite
+upload/
+static/
