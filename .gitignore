@@ -54,6 +54,7 @@ data/full_dataset*
 *.parquet
 *.feather
 *.jsonl
+models.zip
 
 # ALLOW: data/processed/*.pkl, *.json (your recommender needs these!)
 
