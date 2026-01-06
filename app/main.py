@@ -11,16 +11,46 @@ import pandas as pd
 from difflib import get_close_matches
 from pathlib import Path
 import json
+import os
+import requests
+import zipfile
 
 # ----------------------------
 # Paths (match training script)
 # ----------------------------
-# This file lives at: <repo_root>/recommender/app/main.py
-# So BASE_DIR should be: <repo_root>/recommender
+# This file lives at: <repo_root>/app/main.py
 CURRENT_FILE = Path(__file__).resolve()
-BASE_DIR = CURRENT_FILE.parent.parent            # /.../recommender
+BASE_DIR = CURRENT_FILE.parent.parent            # repo root
 RAW_DIR = BASE_DIR / "data"
 PROCESSED_DIR = RAW_DIR / "processed"
+
+# ----------------------------
+# Download models if missing
+# ----------------------------
+# TODO: replace this with the real URL where you host models.zip
+MODELS_ZIP_URL = os.getenv(
+    "MODELS_ZIP_URL",
+    "https://github.com/Ankitkr20/restaurant-recommender/releases/download/v1-models/models.zip",
+)
+
+PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+MODELS_FLAG = PROCESSED_DIR / ".models_ready"
+
+if not MODELS_FLAG.exists():
+    print("⬇️ Downloading models from", MODELS_ZIP_URL)
+    resp = requests.get(MODELS_ZIP_URL)
+    resp.raise_for_status()
+
+    zip_path = BASE_DIR / "models.zip"
+    with open(zip_path, "wb") as f:
+        f.write(resp.content)
+
+    with zipfile.ZipFile(zip_path, "r") as zf:
+        zf.extractall(BASE_DIR)  # expects data/processed/*.pkl inside the zip
+
+    zip_path.unlink()
+    MODELS_FLAG.touch()
+    print("✅ Models downloaded and extracted.")
 
 # Optional: debug print once at startup
 print(f"📁 BASE_DIR = {BASE_DIR}")
@@ -49,7 +79,7 @@ try:
     MY_MENU_IDS = list(map(int, MY_MENU.keys()))
 except FileNotFoundError as e:
     raise RuntimeError(
-        f"❌ Model files not found. Run hybrid_train.py first.\nMissing file: {e}"
+        f"❌ Model files not found after download.\nMissing file: {e}"
     )
 
 recipes["name"] = recipes["name"].astype(str)
